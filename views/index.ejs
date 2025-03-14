@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science Lab Borrow-Return System</title>
+    <link rel="stylesheet" href="/css/index.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <div class="logo">
+            <svg xmlns="http://www.w3.org/2000/svg" width="200" height="200" fill="#014d6f" viewBox="0 0 256 256">
+                <path
+                    d="M196.12,128c24.65-34.61,37.22-70.38,19.74-87.86S162.61,35.23,128,59.88C93.39,35.23,57.62,22.66,40.14,40.14S35.23,93.39,59.88,128c-24.65,34.61-37.22,70.38-19.74,87.86h0c5.63,5.63,13.15,8.14,21.91,8.14,18.48,0,42.48-11.17,66-27.88C151.47,212.83,175.47,224,194,224c8.76,0,16.29-2.52,21.91-8.14h0C233.34,198.38,220.77,162.61,196.12,128Zm8.43-76.55c7.64,7.64,2.48,32.4-18.52,63.28a300.33,300.33,0,0,0-21.19-23.57A300.33,300.33,0,0,0,141.27,70C172.15,49,196.91,43.8,204.55,51.45ZM176.29,128a289.14,289.14,0,0,1-22.76,25.53A289.14,289.14,0,0,1,128,176.29a289.14,289.14,0,0,1-25.53-22.76A289.14,289.14,0,0,1,79.71,128,298.62,298.62,0,0,1,128,79.71a289.14,289.14,0,0,1,25.53,22.76A289.14,289.14,0,0,1,176.29,128ZM51.45,51.45c2.2-2.21,5.83-3.35,10.62-3.35C73.89,48.1,92.76,55,114.72,70A304,304,0,0,0,91.16,91.16,300.33,300.33,0,0,0,70,114.73C49,83.85,43.81,59.09,51.45,51.45Zm0,153.1C43.81,196.91,49,172.15,70,141.27a300.33,300.33,0,0,0,21.19,23.57A304.18,304.18,0,0,0,114.73,186C83.85,207,59.09,212.2,51.45,204.55Zm153.1,0c-7.64,7.65-32.4,2.48-63.28-18.52a304.18,304.18,0,0,0,23.57-21.19A300.33,300.33,0,0,0,186,141.27C207,172.15,212.19,196.91,204.55,204.55ZM140,128a12,12,0,1,1-12-12A12,12,0,0,1,140,128Z">
+                </path>
+            </svg>
+        </div>
+        <h1>Science Laboratory Borrow-Return Management System</h1>
+
+        <div class="metamask-section">
+            <p>Connect your MetaMask wallet to get started:</p>
+            <button id="connectWallet" class="connect-btn">Connect My MetaMask</button>
+            <button id="disconnectWallet" class="disconnect-btn hidden">Disconnect</button>
+
+            <p id="account-info" class="connected-account hidden">
+                Connected Account: <span id="accountAddress">N/A</span><br>
+                Role: <span id="userRole">N/A</span>
+            </p>
+        </div>
+
+
+        <div class="options">
+            <div id="user-option" class="option disabled" onclick="navigateIfEnabled('user.ejs')">
+                <svg xmlns="http://www.w3.org/2000/svg" height="100" fill="#014d6f" viewBox="0 0 256 256">
+                    <path
+                        d="M232,198.65V240a8,8,0,0,1-16,0V198.65A74.84,74.84,0,0,0,192,144v58.35a8,8,0,0,1-14.69,4.38l-10.68-16.31c-.08-.12-.16-.25-.23-.38a12,12,0,0,0-20.89,11.83l22.13,33.79a8,8,0,0,1-13.39,8.76l-22.26-34-.24-.38A28,28,0,0,1,176,176.4V64H160a8,8,0,0,1,0-16h16a16,16,0,0,1,16,16v59.62A90.89,90.89,0,0,1,232,198.65ZM88,56a8,8,0,0,0-8-8H64A16,16,0,0,0,48,64V200a8,8,0,0,0,16,0V64H80A8,8,0,0,0,88,56Zm69.66,42.34a8,8,0,0,0-11.32,0L128,116.69V16a8,8,0,0,0-16,0V116.69L93.66,98.34a8,8,0,0,0-11.32,11.32l32,32a8,8,0,0,0,11.32,0l32-32A8,8,0,0,0,157.66,98.34Z">
+                    </path>
+                </svg>
+                <p>Borrow or Return Equipment</p>
+            </div>
+
+            <div id="admin-panel" class="option disabled" onclick="navigateIfEnabled('admin')">
+                <svg xmlns="http://www.w3.org/2000/svg" height="100" fill="#014d6f" viewBox="0 0 256 256">
+                    <path
+                        d="M75.19,198.4a8,8,0,0,0,11.21-1.6,52,52,0,0,1,83.2,0,8,8,0,1,0,12.8-9.6A67.88,67.88,0,0,0,155,165.51a40,40,0,1,0-53.94,0A67.88,67.88,0,0,0,73.6,187.2,8,8,0,0,0,75.19,198.4ZM128,112a24,24,0,1,1-24,24A24,24,0,0,1,128,112Zm72-88H56A16,16,0,0,0,40,40V216a16,16,0,0,0,16,16H200a16,16,0,0,0,16-16V40A16,16,0,0,0,200,24Zm0,192H56V40H200ZM88,64a8,8,0,0,1,8-8h64a8,8,0,0,1,0,16H96A8,8,0,0,1,88,64Z">
+                    </path>
+                </svg>
+                <p>Admin<br>Panel</p>
+            </div>
+
+        </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+        <script src="/js/connect.js"></script>
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <script>
+            function navigateIfEnabled(url) {
+                const targetDiv = event.currentTarget; // Get the clicked div
+
+                if (!targetDiv.classList.contains("disabled")) {
+                    window.location.href = url;
+                } else {
+                    Swal.fire({
+                        icon: "error",
+                        title: "Access Denied",
+                        text: "You are not allowed to access this feature. You should login first",
+                        confirmButtonColor: "#d33"
+                    });
+                }
+            }
+        </script>
+
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            const userOption = document.getElementById("user-option");
+            const adminPanel = document.getElementById("admin-panel");
+
+            const role = localStorage.getItem("role");
+
+            if (role === "Admin") {
+                adminPanel.classList.remove("disabled");
+                adminPanel.classList.add("active");
+                userOption.classList.remove("active");
+            } else {
+                adminPanel.classList.add("disabled");
+                userOption.classList.add("active");
+            }
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Equipment Borrowing System</title>
+    <link rel="stylesheet" href="/css/user.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+
+    <!-- Back to Home Button -->
+    <div class="back-btn">
+        <a href="index.ejs">
+        <svg xmlns="http://www.w3.org/2000/svg" height="40" fill="#014d6f" viewBox="0 0 256 256">
+            <path
+                d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32Zm0,176H48V48H208ZM82.34,133.66a8,8,0,0,1,0-11.32l32-32a8,8,0,0,1,11.32,11.32L107.31,120H168a8,8,0,0,1,0,16H107.31l18.35,18.34a8,8,0,0,1-11.32,11.32Z">
+            </path>
+        </svg></a>
+        <span>Back to Home</span>
+    </div>
+
+    <!-- Tabs for Equipment Categories -->
+    <div class="tabs">
+        <button class="tab active" onclick="showTab('add')">Add New Equipment</button>
+        <button class="tab" onclick="showTab('broken')">Broken Equipment</button>
+        <button class="tab" onclick="showTab('records')">Equipment Record</button>
+    </div>
+
+    <!-- Equipment Lists -->
+    <div class="equipment-container">
+        <div id="add" class="equipment-list active">
+            <div class="equipment-card">
+                <h3>Equipment Name</h3>
+                <p>Equipment description goes here Equipment description goes here Equipment desc...</p>
+                <span class="status available">Status: Available</span>
+            </div>
+            <div class="equipment-card">
+                <h3>Equipment Name</h3>
+                <p>Equipment description goes here Equipment description goes here Equipment desc...</p>
+                <span class="status available">Status: Available</span>
+            </div>
+            <div class="equipment-card">
+                <h3>Equipment Name</h3>
+                <p>Equipment description goes here Equipment description goes here Equipment desc...</p>
+                <span class="status available">Status: Available</span>
+            </div>
+            <div class="equipment-card">
+                <h3>Equipment Name</h3>
+                <p>Equipment description goes here Equipment description goes here Equipment desc...</p>
+                <span class="status available">Status: Available</span>
+            </div>
+        </div>
+
+        <div id="broken" class="equipment-list">
+
+            <div class="equipment-card">
+                <h3>Equipment Name</h3>
+                <p>Equipment description goes here Equipment description goes here Equipment desc...</p>
+                <p>Date Recorded when Broken:</p>
+                <p>Returner when Broken:</p>
+                <button class="borrow-btn">Mark as Available again</button>
+            </div>
+
+        </div>
+
+        <div id="records" class="equipment-list">
+            <div class="equipment-card">
+                <h3>Equipment Name</h3>
+                <p>Equipment description goes here Equipment description goes here Equipment desc...</p>
+                <span class="status available">Status: Available</span>
+                <button class="borrow-btn">View Borrow-Return Record</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function showTab(tabId) {
+            // Hide all equipment lists
+            document.querySelectorAll('.equipment-list').forEach(list => {
+                list.classList.remove('active');
+            });
+
+            // Show the selected tab
+            document.getElementById(tabId).classList.add('active');
+
+            // Update active tab styling
+            document.querySelectorAll('.tab').forEach(tab => {
+                tab.classList.remove('active');
+            });
+            event.target.classList.add('active');
+        }
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+    <script src="/js/admin.js"></script>
+
+</body>
+
+</html>

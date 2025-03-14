@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Laboratory Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+<body>
+    <div class="container">
+        <h1>Laboratory Equipment Dashboard</h1>
+        <div id="account-info">
+            <p>Connected Account: <span id="accountAddress"></span></p>
+            <p>Role: <span id="userRole">Loading...</span></p>
+        </div>
+
+        <div id="admin-panel" class="hidden">
+            <h2>Admin Panel</h2>
+            <div class="form-group">
+                <h3>Add New Equipment</h3>
+                <form id="addEquipmentForm">
+                    <input type="text" id="equipmentName" placeholder="Equipment Name" required>
+                    <textarea id="equipmentDescription" placeholder="Equipment Description" required></textarea>
+                    <button type="submit" class="btn">Add Equipment</button>
+                </form>
+            </div>
+        </div>
+
+        <div id="equipment-list">
+            <h2>Available Equipment</h2>
+            <div id="available-equipment" class="equipment-cards">
+                <!-- Equipment cards will be inserted here -->
+                <div class="loading">Loading...</div>
+            </div>
+
+            <h2>Borrowed Equipment</h2>
+            <div id="borrowed-equipment" class="equipment-cards">
+                <!-- Borrowed equipment cards will be inserted here -->
+                <div class="loading">Loading...</div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
+    <script src="/js/admin.js"></script>
+</body>
+
+</html>
