@@ -4,8 +4,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Equipment Borrowing System</title>
-    <link rel="stylesheet" href="../public/css/user.css">
+    <title>Science Lab Borrow-Return System</title>
+    <link rel="stylesheet" href="/css/user.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -16,13 +16,12 @@
 <body>
 
     <!-- Back to Home Button -->
-    <div class="back-btn">
-        <a href="index.ejs">
-        <svg xmlns="http://www.w3.org/2000/svg" height="40" fill="#014d6f" viewBox="0 0 256 256">
-            <path
-                d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32Zm0,176H48V48H208ZM82.34,133.66a8,8,0,0,1,0-11.32l32-32a8,8,0,0,1,11.32,11.32L107.31,120H168a8,8,0,0,1,0,16H107.31l18.35,18.34a8,8,0,0,1-11.32,11.32Z">
-            </path>
-        </svg></a>
+    <div class="back-btn" onclick="navigateIfEnabled('/')">
+            <svg xmlns="http://www.w3.org/2000/svg" height="40" fill="#014d6f" viewBox="0 0 256 256">
+                <path
+                    d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32Zm0,176H48V48H208ZM82.34,133.66a8,8,0,0,1,0-11.32l32-32a8,8,0,0,1,11.32,11.32L107.31,120H168a8,8,0,0,1,0,16H107.31l18.35,18.34a8,8,0,0,1-11.32,11.32Z">
+                </path>
+            </svg>
         <span>Back to Home</span>
     </div>
 
@@ -30,62 +29,56 @@
     <div class="tabs">
         <button class="tab active" onclick="showTab('available')">Available Equipment</button>
         <button class="tab" onclick="showTab('active')">Active Borrowed Equipment</button>
-        <button class="tab" onclick="showTab('records')">Records of Borrowed Equipment</button>
     </div>
 
     <!-- Equipment Lists -->
     <div class="equipment-container">
+
         <div id="available" class="equipment-list active">
             <div class="search-bar-container">
                 <input type="text" class="search-bar" placeholder="Search Equipment...">
             </div>
-
-            <div class="equipment-card">
-                <h3>Equipment Name</h3>
-                <p>Equipment description goes here Equipment description goes here Equipment desc...</p>
-                <span class="status available">Status: Available</span>
-                <button class="borrow-btn">Borrow</button>
-            </div>
-            <div class="equipment-card">
-                <h3>Equipment Name</h3>
-                <p>Equipment description goes here Equipment description goes here Equipment desc...</p>
-                <span class="status available">Status: Available</span>
-                <button class="borrow-btn">Borrow</button>
-            </div>
-            <div class="equipment-card">
-                <h3>Equipment Name</h3>
-                <p>Equipment description goes here Equipment description goes here Equipment desc...</p>
-                <span class="status available">Status: Available</span>
-                <button class="borrow-btn">Borrow</button>
-            </div>
-            <div class="equipment-card">
-                <h3>Equipment Name</h3>
-                <p>Equipment description goes here Equipment description goes here Equipment desc...</p>
-                <span class="status available">Status: Available</span>
-                <button class="borrow-btn">Borrow</button>
-            </div>
+            <% if (equipmentList.length> 0) { %>
+                <% equipmentList.forEach(equipment=> { %>
+                    <% if (equipment.isAvailable) { %> <!-- Show only available equipment -->
+                        <div class="equipment-card">
+                            <h3>
+                                <%= equipment.name %>
+                            </h3>
+                            <p>
+                                <%= equipment.description %>
+                            </p>
+                            <span class="status available">Status: Available</span>
+                            <button class="borrow-btn" data-id="<%= equipment.id %>">Borrow</button>
+                        </div>
+                        <% } %>
+                            <% }); %>
+                                <% } else { %>
+                                    <p>No available equipment at the moment.</p>
+                                    <% } %>
         </div>
+
 
         <div id="active" class="equipment-list">
-
-            <div class="equipment-card">
-                <h3>Equipment Name</h3>
-                <p>Equipment description goes here Equipment description goes here Equipment desc...</p>
-                <p>Borrowed Date:</p>
-                <button class="borrow-btn">Return</button>
-            </div>
-
-        </div>
-
-        <div id="records" class="equipment-list">
-            <div class="equipment-card">
-                <h3>Equipment Name</h3>
-                <p>Equipment description goes here Equipment description goes here Equipment desc...</p>
-                <p>Borrowed Date:</p>
-                <p>Return Date:</p> 
-                <span class="status available">Returned Condition: Not Damaged</span>
-                <button class="borrow-btn">Return</button>
-            </div>
+            <% if (borrowedEquipment.length> 0) { %>
+                <% borrowedEquipment.forEach(equipment=> { %>
+                    <div class="equipment-card">
+                        <h3>
+                            <%= equipment.name %>
+                        </h3>
+                        <p>
+                            <%= equipment.description %>
+                        </p>
+                        <p>Borrowed Date: <%= new Date(equipment.borrowTime * 1000).toLocaleString() %>
+                        </p>
+                        <p>Return Deadline: <%= new Date(equipment.returnDeadline * 1000).toLocaleString() %>
+                        </p>
+                        <button class="return-btn" data-id="<%= equipment.id %>">Return</button>
+                    </div>
+                    <% }); %>
+                        <% } else { %>
+                            <p>No active borrowed equipment.</p>
+                            <% } %>
         </div>
     </div>
 
@@ -106,7 +99,24 @@
             event.target.classList.add('active');
         }
     </script>
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="/js/user.js"></script>
+    <script>
+        function navigateIfEnabled(url) {
+            const targetDiv = event.currentTarget; // Get the clicked div
 
+            if (!targetDiv.classList.contains("disabled")) {
+                window.location.href = url;
+            } else {
+                Swal.fire({
+                    icon: "error",
+                    title: "Access Denied",
+                    text: "You are not allowed to access this feature. You should login first",
+                    confirmButtonColor: "#d33"
+                });
+            }
+        }
+    </script>
 </body>
 
 </html>
