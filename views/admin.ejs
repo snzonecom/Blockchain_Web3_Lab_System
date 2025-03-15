@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Science Lab Borrow-Return System</title>
-    <link rel="stylesheet" href="/css/user.css">
+    <link rel="stylesheet" href="/css/admin.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link
@@ -14,92 +14,60 @@
 </head>
 
 <body>
+    <div class="container">
+        <a href="/" class="back-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                <path
+                    d="M208,72H128V32a8,8,0,0,0-13.66-5.66l-96,96a8,8,0,0,0,0,11.32l96,96A8,8,0,0,0,128,224V184h80a16,16,0,0,0,16-16V88A16,16,0,0,0,208,72Zm0,96H120a8,8,0,0,0-8,8v28.69L35.31,128,112,51.31V80a8,8,0,0,0,8,8h88Z">
+                </path>
+            </svg>
+            Back to Home
+        </a>
 
-    <!-- Back to Home Button -->
-    <div class="back-btn" onclick="navigateIfEnabled('/')">
-        <svg xmlns="http://www.w3.org/2000/svg" height="40" fill="#014d6f" viewBox="0 0 256 256">
-            <path
-                d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32Zm0,176H48V48H208ZM82.34,133.66a8,8,0,0,1,0-11.32l32-32a8,8,0,0,1,11.32,11.32L107.31,120H168a8,8,0,0,1,0,16H107.31l18.35,18.34a8,8,0,0,1-11.32,11.32Z">
-            </path>
-        </svg>
-        <span>Back to Home</span>
-    </div>
+        <h1>Hello Admin! <br> Do you want to: </h1>
 
-    <!-- Tabs for Equipment Categories -->
-    <div class="tabs">
-        <button class="tab active" onclick="showTab('add')">Add New Equipment</button>
-    </div>
+        <div class="options-container">
 
-    <!-- Equipment Lists -->
-    <div class="equipment-container">
+            <div class="option-card-new">
+                <svg xmlns="http://www.w3.org/2000/svg" height="100" fill="#014d6f" viewBox="0 0 256 256">
+                    <path
+                        d="M221.69,199.77,160,96.92V40h8a8,8,0,0,0,0-16H88a8,8,0,0,0,0,16h8V96.92L34.31,199.77A16,16,0,0,0,48,224H208a16,16,0,0,0,13.72-24.23ZM110.86,103.25A7.93,7.93,0,0,0,112,99.14V40h32V99.14a7.93,7.93,0,0,0,1.14,4.11L183.36,167c-12,2.37-29.07,1.37-51.75-10.11-15.91-8.05-31.05-12.32-45.22-12.81ZM48,208l28.54-47.58c14.25-1.74,30.31,1.85,47.82,10.72,19,9.61,35,12.88,48,12.88a69.89,69.89,0,0,0,19.55-2.7L208,208Z">
+                    </path>
+                </svg>
+                <div class="option-title">Add New <br>Equipment</div>
+            </div>
 
-        <!-- Equipment Add Form -->
-        <div class="add-item-container">
-            <form id="addEquipmentForm">
-                <input type="text" id="equipmentName" placeholder="Equipment Name" required>
-                <input type="text" id="equipmentDescription" placeholder="Equipment Description" required>
-                <input type="text" id="tokenURI" placeholder="Token URI (optional)">
-                <button type="submit">Add Equipment</button>
-            </form>
-        </div>
+            <div class="option-card-damaged">
+                <svg xmlns="http://www.w3.org/2000/svg" height="100" fill="#014d6f" viewBox="0 0 256 256">
+                    <path
+                        d="M224,208H203.94A88.05,88.05,0,0,0,144,64.37V32a16,16,0,0,0-16-16H80A16,16,0,0,0,64,32V136a16,16,0,0,0,16,16h48a16,16,0,0,0,16-16V80.46A72,72,0,0,1,181.25,208H32a8,8,0,0,0,0,16H224a8,8,0,0,0,0-16Zm-96-72H80V32h48V136ZM72,184a8,8,0,0,1,0-16h64a8,8,0,0,1,0,16Z">
+                    </path>
+                </svg>
+                <div class="option-title">View Damaged Equipment</div>
+            </div>
 
-        <div id="add" class="equipment-list active">
-            <% if (equipmentList.length> 0) { %>
-                <% equipmentList.forEach(equipment=> { %>
-                    <div class="equipment-card">
-                        <h3>
-                            <%= equipment.name %>
-                        </h3>
-                        <p>
-                            <%= equipment.description %>
-                        </p>
-                        <span class="status <%= equipment.isAvailable ? 'available' : 'borrowed' %>">
-                            Status: <%= equipment.isAvailable ? 'Available' : 'Borrowed' %>
-                        </span>
-                    </div>
-                    <% }); %>
-                        <% } else { %>
-                            <p>No equipment added yet.</p>
-                            <% } %>
+            <div class="option-card-history">
+                <svg xmlns="http://www.w3.org/2000/svg" height="100" fill="#014d6f" viewBox="0 0 256 256">
+                    <path
+                        d="M32,64a8,8,0,0,1,8-8H216a8,8,0,0,1,0,16H40A8,8,0,0,1,32,64Zm8,72h72a8,8,0,0,0,0-16H40a8,8,0,0,0,0,16Zm88,48H40a8,8,0,0,0,0,16h88a8,8,0,0,0,0-16Zm109.66,13.66a8,8,0,0,1-11.32,0L206,177.36A40,40,0,1,1,217.36,166l20.3,20.3A8,8,0,0,1,237.66,197.66ZM184,168a24,24,0,1,0-24-24A24,24,0,0,0,184,168Z">
+                    </path>
+                </svg>
+                <div class="option-title">Search History of an Equipment</div>
+            </div>
         </div>
     </div>
 
     <script>
-        function showTab(tabId) {
-            // Hide all equipment lists
-            document.querySelectorAll('.equipment-list').forEach(list => {
-                list.classList.remove('active');
-            });
-
-            // Show the selected tab
-            document.getElementById(tabId).classList.add('active');
-
-            // Update active tab styling
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            event.target.classList.add('active');
-        }
-    </script>
-    <script src="https://cdn.jsdelivr.net/npm/web3@1.5.2/dist/web3.min.js"></script>
-    <script src="/js/admin.js"></script>
-    <script>
-        function navigateIfEnabled(url) {
-            const targetDiv = event.currentTarget; // Get the clicked div
-
-            if (!targetDiv.classList.contains("disabled")) {
-                window.location.href = url;
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: "Access Denied",
-                    text: "You are not allowed to access this feature. You should login first",
-                    confirmButtonColor: "#d33"
-                });
-            }
-        }
-    </script>
-
+        document.querySelector(".option-card-new").addEventListener("click", function() {
+            window.location.href = "new-equipment";
+        });
+        document.querySelector(".option-card-damaged").addEventListener("click", function() {
+            window.location.href = "damaged-equipment";
+        });
+        document.querySelector(".option-card-history").addEventListener("click", function() {
+            window.location.href = "record";
+        });
+    </script>    
 </body>
 
 </html>

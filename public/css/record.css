@@ -1,0 +1,104 @@
+* {
+    font-family: "Poppins", sans-serif;
+}
+
+body {
+    background-color: #f0f8fb;
+    margin: 0;
+    padding: 20px;
+    color: #0a4158;
+}
+
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    color: #0a4158;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.back-button svg {
+    margin-right: 10px;
+    border: 2px solid #014d6f;
+    padding: 5px;
+    height: 20px;
+    fill: #014d6f;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+    margin-bottom: 30px;
+    color: #0a4158;
+}
+
+.search-container {
+    background-color: #c6e4f2;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.search-input {
+    flex-grow: 1;
+    padding: 15px;
+    margin-right: 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.view-button {
+    background-color: #0a4158;
+    color: white;
+    border: none;
+    border-radius: 30px;
+    padding: 15px 20px;
+    font-size: 1rem;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.record-card {
+    border: 1px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    background-color: white;
+    margin-bottom: 20px;
+}
+
+.borrower-id {
+    font-size: 1.2rem;
+    font-weight: bold;
+    color: #0a4158;
+    margin-bottom: 15px;
+    word-break: break-all;
+}
+
+.record-info {
+    margin-bottom: 10px;
+    color: #555;
+}
+
+@media (max-width: 768px) {
+    .search-container {
+        flex-direction: column;
+    }
+
+    .search-input {
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 15px;
+    }
+}

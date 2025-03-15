@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science Lab Borrow-Return System</title>
+    <link rel="stylesheet" href="/css/record.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+</head>
+
+<body>
+    <div class="container">
+        <a href="/admin" class="back-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                <path
+                    d="M208,72H128V32a8,8,0,0,0-13.66-5.66l-96,96a8,8,0,0,0,0,11.32l96,96A8,8,0,0,0,128,224V184h80a16,16,0,0,0,16-16V88A16,16,0,0,0,208,72Zm0,96H120a8,8,0,0,0-8,8v28.69L35.31,128,112,51.31V80a8,8,0,0,0,8,8h88Z">
+                </path>
+            </svg>
+            Back to Home
+        </a>
+
+        <h1>Borrow-Return Record of Equipment</h1>
+
+        <div class="search-container">
+            <input type="text" id="equipmentId" class="search-input" placeholder="Enter Equipment ID">
+            <button onclick="fetchHistory()" class="view-button">View Equipment History</button>
+        </div>
+
+        <div id="record-container">
+            <!-- History will be inserted here dynamically -->
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+
+    <script>
+        async function fetchHistory() {
+            const equipmentId = document.getElementById("equipmentId").value;
+            const recordContainer = document.getElementById("record-container");
+
+            if (!equipmentId) {
+                recordContainer.innerHTML = "<p style='color:red;'>Please enter an Equipment ID.</p>";
+                return;
+            }
+
+            try {
+                const response = await fetch(`/api/record/${equipmentId}`);
+                const data = await response.json();
+
+                if (data.success && data.history.length > 0) {
+                    let html = `<h2>Transaction History for Equipment ID: ${equipmentId}</h2>`;
+                    data.history.forEach(record => {
+                        html += `
+                            <div class="record-card">
+                                <div class="borrower-id">Borrower: ${record.borrower}</div>
+                                <div class="record-info">Borrow Time: ${record.borrowTime}</div>
+                                <div class="record-info">Return Time: ${record.returnTime}</div>
+                                <div class="record-info">Return Condition: ${record.returnCondition}</div>
+                            </div>
+                        `;
+                    });
+                    recordContainer.innerHTML = html;
+                } else {
+                    recordContainer.innerHTML = `<p>No records found for Equipment ID: ${equipmentId}</p>`;
+                }
+            } catch (error) {
+                console.error(error);
+                recordContainer.innerHTML = "<p style='color:red;'>Failed to fetch history.</p>";
+            }
+        }
+    </script>
+</body>
+
+</html>

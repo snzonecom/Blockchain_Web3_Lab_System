@@ -14,47 +14,16 @@ document.addEventListener("DOMContentLoaded", async () => {
     const accounts = await web3.eth.getAccounts();
     const userAccount = accounts[0];
 
-    // Handle adding new equipment
-    document.getElementById("addEquipmentBtn").addEventListener("click", async () => {
-        const name = document.getElementById("equipmentName").value.trim();
-        const description = document.getElementById("equipmentDescription").value.trim();
-        const condition = "UNDAMAGED";
-
-        if (!name || !description || !condition) {
-            alert("Please fill in all fields.");
-            return;
-        }
-
-        try {
-            // Fetch the latest equipment count from the contract to determine new ID
-            const equipmentCount = await contract.methods.equipmentCount().call();
-            const newEquipmentId = Number(equipmentCount) + 1;
-
-            // Generate metadata URL dynamically
-            const tokenURI = `http://localhost:3000/metadata/${newEquipmentId}.json`;
-
-            // Call smart contract function to add equipment
-            await contract.methods.addEquipment(name, description, condition, tokenURI)
-                .send({ from: userAccount });
-
-            alert("Equipment added successfully!");
-            location.reload();
-        } catch (error) {
-            console.error("Error adding equipment:", error);
-            alert("Failed to add equipment.");
-        }
-    });
-
     // Marking damaged equipment as available again
     document.querySelectorAll(".repair-btn").forEach(button => {
         button.addEventListener("click", async () => {
             const equipmentId = button.getAttribute("data-id");
-    
+
             try {
                 const accounts = await web3.eth.getAccounts(); // Get admin's wallet address
                 await contract.methods.updateEquipmentCondition(equipmentId, false)
                     .send({ from: accounts[0] });
-    
+
                 alert("Equipment marked as available again!");
                 location.reload();
             } catch (error) {
@@ -63,5 +32,5 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
     });
-    
+
 });

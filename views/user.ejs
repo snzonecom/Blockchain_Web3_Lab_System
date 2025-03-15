@@ -16,69 +16,57 @@
 <body>
 
     <!-- Back to Home Button -->
-    <div class="back-btn" onclick="navigateIfEnabled('/')">
-            <svg xmlns="http://www.w3.org/2000/svg" height="40" fill="#014d6f" viewBox="0 0 256 256">
-                <path
-                    d="M208,32H48A16,16,0,0,0,32,48V208a16,16,0,0,0,16,16H208a16,16,0,0,0,16-16V48A16,16,0,0,0,208,32Zm0,176H48V48H208ZM82.34,133.66a8,8,0,0,1,0-11.32l32-32a8,8,0,0,1,11.32,11.32L107.31,120H168a8,8,0,0,1,0,16H107.31l18.35,18.34a8,8,0,0,1-11.32,11.32Z">
-                </path>
-            </svg>
-        <span>Back to Home</span>
-    </div>
+    <a href="/" class="back-button">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+            <path
+                d="M208,72H128V32a8,8,0,0,0-13.66-5.66l-96,96a8,8,0,0,0,0,11.32l96,96A8,8,0,0,0,128,224V184h80a16,16,0,0,0,16-16V88A16,16,0,0,0,208,72Zm0,96H120a8,8,0,0,0-8,8v28.69L35.31,128,112,51.31V80a8,8,0,0,0,8,8h88Z">
+            </path>
+        </svg>
+        Back to Home
+    </a>
 
     <!-- Tabs for Equipment Categories -->
     <div class="tabs">
         <button class="tab active" onclick="showTab('available')">Available Equipment</button>
-        <button class="tab" onclick="showTab('active')">Active Borrowed Equipment</button>
+        <button class="tab" onclick="showTab('borrowed')">Active Borrowed Equipment</button>
     </div>
 
-    <!-- Equipment Lists -->
-    <div class="equipment-container">
-
-        <div id="available" class="equipment-list active">
-            <div class="search-bar-container">
-                <input type="text" class="search-bar" placeholder="Search Equipment...">
-            </div>
-            <% if (equipmentList.length> 0) { %>
-                <% equipmentList.forEach(equipment=> { %>
-                    <% if (equipment.isAvailable) { %> <!-- Show only available equipment -->
+    <!-- Available Equipment List -->
+    <div id="available" class="equipment-list active">
+        <div class="equipment-grid">
+            <% if (equipmentList.length===0) { %>
+                <p>No available equipment at the moment.</p>
+                <% } else { %>
+                    <% equipmentList.forEach(equipment=> { %>
                         <div class="equipment-card">
-                            <h3>
+                            <div class="equipment-title">
                                 <%= equipment.name %>
-                            </h3>
-                            <p>
+                            </div>
+                            <div class="equipment-description">
                                 <%= equipment.description %>
-                            </p>
-                            <span class="status available">Status: Available</span>
-                            <button class="borrow-btn" data-id="<%= equipment.id %>">Borrow</button>
+                            </div>
+                            <div class="status-badge status-available">Status: Available</div>
+                            <button class="borrow-button" data-id="<%= equipment.id %>">Borrow</button>
                         </div>
-                        <% } %>
-                            <% }); %>
-                                <% } else { %>
-                                    <p>No available equipment at the moment.</p>
-                                    <% } %>
-        </div>
-
-
-        <div id="active" class="equipment-list">
-            <% if (borrowedEquipment.length> 0) { %>
-                <% borrowedEquipment.forEach(equipment=> { %>
-                    <div class="equipment-card">
-                        <h3>
-                            <%= equipment.name %>
-                        </h3>
-                        <p>
-                            <%= equipment.description %>
-                        </p>
-                        <p>Borrowed Date: <%= new Date(equipment.borrowTime * 1000).toLocaleString() %>
-                        </p>
-                        <p>Return Deadline: <%= new Date(equipment.returnDeadline * 1000).toLocaleString() %>
-                        </p>
-                        <button class="return-btn" data-id="<%= equipment.id %>">Return</button>
-                    </div>
-                    <% }); %>
-                        <% } else { %>
-                            <p>No active borrowed equipment.</p>
+                        <% }); %>
                             <% } %>
+        </div>
+    </div>
+
+    <!-- Borrowed Equipment Lists -->
+    <div id="borrowed" class="equipment-list">
+        <div class="equipment-grid">
+            <% if (borrowedEquipment.length === 0) { %>
+                <p>No borrowed equipment.</p>
+            <% } else { %>
+                <% borrowedEquipment.forEach(equipment => { %>
+            <div class="equipment-card">
+                <div class="equipment-title"><%= equipment.name %></div>
+                <div class="status-badge borrow-badge">Borrowed Time: <%= new Date(equipment.borrowTime * 1000).toLocaleString() %></div>
+                <button class="return-button" data-id="<%= equipment.id %>">Return</button>
+            </div>
+            <% }); %>
+        <% } %>
         </div>
     </div>
 
@@ -99,24 +87,10 @@
             event.target.classList.add('active');
         }
     </script>
+
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
     <script src="/js/user.js"></script>
-    <script>
-        function navigateIfEnabled(url) {
-            const targetDiv = event.currentTarget; // Get the clicked div
 
-            if (!targetDiv.classList.contains("disabled")) {
-                window.location.href = url;
-            } else {
-                Swal.fire({
-                    icon: "error",
-                    title: "Access Denied",
-                    text: "You are not allowed to access this feature. You should login first",
-                    confirmButtonColor: "#d33"
-                });
-            }
-        }
-    </script>
 </body>
 
 </html>

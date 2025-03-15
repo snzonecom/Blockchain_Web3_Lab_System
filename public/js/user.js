@@ -16,18 +16,12 @@ document.addEventListener("DOMContentLoaded", async () => {
     console.log("Connected wallet:", userAccount);
 
     // Handle borrowing equipment
-    document.querySelectorAll(".borrow-btn").forEach(button => {
+    document.querySelectorAll(".borrow-button").forEach(button => {
         button.addEventListener("click", async () => {
             const equipmentId = button.getAttribute("data-id");
-            const borrowDuration = prompt("Enter borrow duration in seconds (e.g., 7 days = 604800):");
-
-            if (!borrowDuration || isNaN(borrowDuration) || borrowDuration <= 0) {
-                alert("Invalid borrow duration. Please enter a valid number.");
-                return;
-            }
 
             try {
-                await contract.methods.borrowEquipment(equipmentId, borrowDuration)
+                await contract.methods.borrowEquipment(equipmentId)
                     .send({ from: userAccount });
 
                 alert("Equipment borrowed successfully!");
@@ -40,13 +34,17 @@ document.addEventListener("DOMContentLoaded", async () => {
     });
 
     // Handle returning equipment
-    document.querySelectorAll(".return-btn").forEach(button => {
+    document.querySelectorAll(".return-button").forEach(button => {
         button.addEventListener("click", async () => {
             const equipmentId = button.getAttribute("data-id");
 
+            // Ask the user if the equipment is damaged
+            const isDamaged = confirm("Is the equipment damaged? Click 'OK' for YES, 'Cancel' for NO.");
+
             try {
-                await contract.methods.returnEquipment(equipmentId)
-                    .send({ from: userAccount });
+                const accounts = await web3.eth.getAccounts(); // Get the user's wallet address
+                await contract.methods.returnEquipment(equipmentId, isDamaged)
+                    .send({ from: accounts[0] });
 
                 alert("Equipment returned successfully!");
                 location.reload();
@@ -56,4 +54,5 @@ document.addEventListener("DOMContentLoaded", async () => {
             }
         });
     });
+
 });

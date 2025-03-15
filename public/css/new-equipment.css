@@ -5,7 +5,7 @@
 body {
     background-color: #f0f8fb;
     margin: 0;
-    padding: 50px;
+    padding: 20px;
     color: #0a4158;
 }
 
@@ -40,46 +40,34 @@ h1 {
     color: #0a4158;
 }
 
-/* Hide all equipment lists initially */
-.equipment-list {
-    display: none;
+.form-container {
+    background-color: #bddff2;
+    border-radius: 10px;
+    padding: 20px;
+    margin-bottom: 30px;
 }
 
-/* Show only the active list */
-.equipment-list.active {
-    display: block;
-    padding-inline: 50px;
+.form-input {
+    width: 97%;
+    padding: 15px;
+    margin-bottom: 20px;
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
 }
 
-.borrow-button {
-    background-color: #6ab7df;
+.submit-button {
+    background-color: #014d6f;
     color: white;
     border: none;
-    margin-top: 15px;
-    padding: 10px 15px;
+    border-radius: 30px;
+    padding: 10px 25px;
     font-size: 1rem;
     cursor: pointer;
     transition: background-color 0.3s;
-    width: 100%;
 }
 
-.borrow-button:hover {
-    background-color: #0d5470;
-}
-
-.return-button {
-    background-color: #6ab7df;
-    color: white;
-    border: none;
-    margin-top: 15px;
-    padding: 10px 15px;
-    font-size: 1rem;
-    cursor: pointer;
-    transition: background-color 0.3s;
-    width: 100%;
-}
-
-.return-button:hover {
+.submit-button:hover {
     background-color: #0d5470;
 }
 
@@ -102,59 +90,34 @@ h1 {
     font-weight: bold;
     color: #014d6f;
     margin-bottom: 15px;
-    text-align: center;
 }
 
 .equipment-description {
     color: #555;
     margin-bottom: 15px;
     line-height: 1.4;
-    text-align: center;
+}
+
+.equipment-id {
+    color: #014d6f;
+    margin-bottom: 15px;
+    line-height: 1;
+    font-weight: bold;
 }
 
 .status-badge {
-    display: block;
+    display: inline-block;
     padding: 8px 15px;
-    border-radius: 10px;
+    border-radius: 20px;
     font-size: 0.9rem;
 }
 
 .status-available {
     background-color: #d1f7c4;
     color: #2b7d4f;
-    text-align: center;
 }
 
-.borrow-badge {
-    background-color: #add4e9;
-    color: #014d6f;
-    text-align: center;
-}
-
-/* Tabs */
-.tabs {
-    display: flex;
-    justify-content: center;
-    gap: 10px;
-    margin-bottom: 20px;
-}
-
-.tab {
-    background-color: #82b6de;
-    border: none;
-    padding: 10px 15px;
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.tab:hover {
-    background-color: #609dc8;
-}
-
-.tab.active {
-    background-color: #3a82b0;
+.status-borrowed {
+    background-color: #ffcccb;
+    color: #b73239;
 }

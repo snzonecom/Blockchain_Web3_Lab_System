@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Science Lab Borrow-Return System</title>
+    <link rel="stylesheet" href="/css/damaged-equipment.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap"
+        rel="stylesheet">
+
+</head>
+
+<body>
+    <div class="container">
+        <a href="/admin" class="back-button">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
+                <path
+                    d="M208,72H128V32a8,8,0,0,0-13.66-5.66l-96,96a8,8,0,0,0,0,11.32l96,96A8,8,0,0,0,128,224V184h80a16,16,0,0,0,16-16V88A16,16,0,0,0,208,72Zm0,96H120a8,8,0,0,0-8,8v28.69L35.31,128,112,51.31V80a8,8,0,0,0,8,8h88Z">
+                </path>
+            </svg>
+            Back to Home
+        </a>
+
+        <h1>View Damaged Equipment</h1>
+
+        <div class="equipment-grid">
+
+            <% if (damagedEquipmentList.length> 0) { %>
+                <% damagedEquipmentList.forEach(equipment=> { %>
+                    <div class="equipment-card">
+                        <div class="equipment-title">
+                            <%= equipment.name %>
+                        </div>
+                        <div class="equipment-description">
+                            <%= equipment.description %>
+                        </div>
+                        <div class="status-badge status-damaged">
+                            Damaged When: <br>
+                            <%= equipment.damagedTime %>
+                        </div>
+                        <button class="submit-button repair-btn" data-id="<%= equipment.id %>">
+                            Mark as Available for Borrowing Again
+                        </button>
+                    </div>
+                    <% }); %>
+                        <% } else { %>
+                            <p>No damaged equipment.</p>
+                            <% } %>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="/js/damaged.js"></script>
+</body>
+
+</html>

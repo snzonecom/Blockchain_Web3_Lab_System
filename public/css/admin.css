@@ -4,155 +4,84 @@
 }
 
 body {
-    font-family: Arial, sans-serif;
-    background-color: #edf3f8;
-    text-align: center;
-    margin: 20px;
-    padding: 0;
-}
-
-/* Back Button */
-.back-btn {
-    display: flex;
-    align-items: center;
-    gap: 5px;
-    font-size: 20px;
-    font-weight: bold;
+    background-color: #f0f8fb;
+    margin: 0;
+    padding: 80px;
     color: #014d6f;
-    margin: 20px;
-    cursor: pointer;
 }
 
-.back-btn svg {
-    font-size: 20px;
+.container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
 }
 
-/* Tabs */
-.tabs {
+.back-button {
+    display: inline-flex;
+    align-items: center;
+    color: #0a4158;
+    text-decoration: none;
+    font-size: 1.5rem;
+    font-weight: bold;
+    margin-bottom: 30px;
+}
+
+.back-button svg {
+    margin-right: 10px;
+    border: 2px solid #014d6f;
+    padding: 5px;
+    height: 20px;
+    fill: #014d6f;
+}
+
+h1 {
+    text-align: center;
+    font-size: 2.5rem;
+}
+
+.options-container {
     display: flex;
     justify-content: center;
-    gap: 10px;
+    gap: 30px;
+    flex-wrap: wrap;
+    max-width: 1000px;
+    margin: 0 auto;
+}
+
+.option-card-new,
+.option-card-damaged,
+.option-card-history {
+    background-color: #c6e4f2;
+    border-radius: 15px;
+    width: 250px;
+    height: 250px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 20px;
+    cursor: pointer;
+    transition: transform 0.3s, box-shadow 0.3s;
+}
+
+.option-card-new:hover,
+.option-card-damaged:hover,
+.option-card-history:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.option-icon {
+    width: 80px;
+    height: 80px;
+    fill: #0a4158;
     margin-bottom: 20px;
 }
 
-.tab {
-    background-color: #82b6de;
-    border: none;
-    padding: 10px 15px;
-    font-size: 16px;
-    font-weight: bold;
-    color: white;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: 0.3s;
-}
-
-.tab:hover {
-    background-color: #609dc8;
-}
-
-.tab.active {
-    background-color: #3a82b0;
-}
-
-/* Equipment Container */
-.equipment-container {
-    display: flex;
-    justify-content: center;
-    flex-wrap: wrap;
-    gap: 20px;
-}
-
-/* Hide all equipment lists initially */
-.equipment-list {
-    display: none;
-    width: 100%;
-    text-align: center;
-}
-
-/* Show only the active list */
-.equipment-list.active {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 20px;
-}
-
-/* Equipment Cards */
-.equipment-card {
-    width: 220px;
-    background-color: white;
-    padding: 15px;
-    border-radius: 10px;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-    border: 1px solid #ccc;
-    text-align: left;
-}
-
-.equipment-card h3 {
-    font-size: 18px;
-    font-weight: bold;
-    color: #003b5c;
-}
-
-.equipment-card p {
-    font-size: 14px;
-    color: #555;
-}
-
-/* Status Indicator */
-.status {
-    display: inline-block;
-    font-size: 14px;
-    font-weight: bold;
-    padding: 5px 10px;
-    border-radius: 5px;
-    margin-block: 5px;
-}
-
-.status.available {
-    background-color: #b4f5c1;
-    color: #065f24;
-}
-
-.borrow-btn {
-    background-color: #007bff;
-    color: white;
-    border: none;
-    padding: 10px 20px;
-    font-size: 16px;
-    border-radius: 5px;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.borrow-btn:hover {
-    background-color: #0056b3;
-}
-
-
-
-
-.modal {
-    display: none;
-    position: fixed;
-    z-index: 1000;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.4);
-}
-.modal-content {
-    background-color: white;
-    margin: 10% auto;
-    padding: 20px;
-    width: 50%;
-    border-radius: 10px;
-}
-.close {
-    float: right;
-    font-size: 20px;
-    cursor: pointer;
+.option-title {
+    margin-top: 20px;
+    font-size: 1.3rem;
+    font-weight: 500;
+    color: #0a4158;
 }

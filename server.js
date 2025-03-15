@@ -8,7 +8,7 @@ const port = process.env.PORT || 3000;
 
 // Contract ABI and address (update the address after deployment)
 const contractABI = require('./contractABI.json');
-const contractAddress = '0x8f2B61928d4523aa72c2f17BF0a95267C4460c9A'; // Replace with actual address after deployment
+const contractAddress = '0xfcAE4A993bbC0811fd1C0d2b613C3FDE033D2aec'; // Replace with actual address after deployment
 
 // Configure web3 with Holesky testnet
 const web3 = new Web3('https://ethereum-holesky.publicnode.com');
@@ -27,28 +27,132 @@ app.get('/', (req, res) => {
     res.render('index');
 });
 
-app.get('/admin', async (req, res) => {
+// Routes
+const conditionMapping = {
+    '1': 'Undamaged',
+    '2': 'Damaged'
+};
+
+app.get('/new-equipment', async (req, res) => {
     try {
         const contract = new web3.eth.Contract(contractABI, contractAddress);
         const equipmentCount = await contract.methods.equipmentCount().call();
         let equipmentList = [];
 
         for (let i = 1; i <= equipmentCount; i++) {
-            const equipment = await contract.methods.equipments(i).call();
+            const equipment = await contract.methods.getEquipment(i).call();
+            const conditionIndex = equipment[6].toString();
+            const conditionText = conditionMapping[conditionIndex] || 'Unknown';
+
             equipmentList.push({
                 id: i,
-                name: equipment.name,
-                description: equipment.description,
-                isAvailable: equipment.isAvailable
+                name: equipment[0],
+                description: equipment[1],
+                isAvailable: equipment[2],
+                condition: conditionText
             });
         }
 
-        res.render('admin', { equipmentList });
+        res.render('new-equipment', { equipmentList });
     } catch (error) {
-        console.error("Error fetching equipment:", error);
-        res.render('admin', { equipmentList: [] });
+        console.error("🔥 Error in /new-equipment route:", error);
+        res.render('new-equipment', { equipmentList: [] });
     }
 });
+
+
+app.get('/damaged-equipment', async (req, res) => {
+    try {
+        const contract = new web3.eth.Contract(contractABI, contractAddress);
+        const equipmentCount = await contract.methods.equipmentCount().call();
+
+        if (equipmentCount === 0) {
+            return res.render('damaged-equipment', { damagedEquipmentList: [] });
+        }
+
+        let damagedEquipmentList = [];
+
+        for (let i = 1; i <= equipmentCount; i++) {
+            const equipment = await contract.methods.equipments(i).call();
+            const condition = await contract.methods.getConditionString(equipment.currentCondition).call();
+
+            if (condition.toLowerCase() === "damaged") {
+                damagedEquipmentList.push({
+                    id: i,
+                    name: equipment.name,
+                    description: equipment.description,
+                    isAvailable: equipment.isAvailable,
+                    damagedTime: equipment.returnTime > 0 ? new Date(equipment.returnTime * 1000).toLocaleString() : "Not returned yet"
+                });
+            }
+        }
+
+        res.render('damaged-equipment', { damagedEquipmentList });
+    } catch (error) {
+        console.error("Error fetching damaged equipment:", error);
+        res.render('damaged-equipment', { damagedEquipmentList: [] });
+    }
+});
+
+
+app.get('/record', (req, res) => {
+    res.render('record', { history: null, equipmentId: null });
+});
+
+// Fetch transaction history for an equipment ID
+app.get('/api/record/:id', async (req, res) => {
+    const contract = new web3.eth.Contract(contractABI, contractAddress);
+    const equipmentId = req.params.id;
+
+    try {
+        const history = await contract.methods.getEquipmentHistory(equipmentId).call();
+
+        // Format data for frontend
+        const formattedHistory = history.map(tx => ({
+            borrower: tx.borrower,
+            borrowTime: new Date(tx.borrowTime * 1000).toLocaleString(),
+            returnTime: tx.returnTime == 0 ? "Not Returned" : new Date(tx.returnTime * 1000).toLocaleString(),
+            returnCondition: tx.returnCondition == 1 ? "Undamaged" : tx.returnCondition == 2 ? "Damaged" : "Unknown"
+        }));
+
+        res.json({ success: true, history: formattedHistory });
+    } catch (error) {
+        console.error(error);
+        res.json({ success: false, message: "Error fetching equipment history." });
+    }
+});
+
+
+app.get('/admin', async (req, res) => {
+    res.render('admin');
+});
+
+
+// For Viewing Metadata
+app.get('/metadata/:id', async (req, res) => {
+    try {
+        const equipmentId = req.params.id;
+        const contract = new web3.eth.Contract(contractABI, contractAddress);
+        const equipment = await contract.methods.equipments(equipmentId).call();
+        const condition = await contract.methods.getConditionString(equipment.currentCondition).call();
+
+        const metadata = {
+            name: equipment.name,
+            description: equipment.description,
+            image: `http://localhost:3000/images/${equipmentId}.jpg`,  // Placeholder, update as needed
+            attributes: [
+                { "trait_type": "Condition", "value": condition },
+                { "trait_type": "Availability", "value": equipment.isAvailable ? "Available" : "Borrowed" }
+            ]
+        };
+
+        res.json(metadata);
+    } catch (error) {
+        console.error("Error fetching metadata:", error);
+        res.status(500).json({ error: "Error fetching metadata" });
+    }
+});
+
 
 app.get('/user', async (req, res) => {
     try {
@@ -66,13 +170,15 @@ app.get('/user', async (req, res) => {
                 isAvailable: equip[2],
                 currentBorrower: equip[3],
                 borrowTime: equip[4],
-                returnDeadline: equip[5]
+                returnDeadline: equip[5],
+                returnTime: equip[6], // New field from smart contract
+                currentCondition: equip[7] // New field from smart contract
             };
 
             if (equipmentData.isAvailable) {
-                equipmentList.push(equipmentData); // Available equipment
+                equipmentList.push(equipmentData);
             } else {
-                borrowedEquipment.push(equipmentData); // Borrowed equipment
+                borrowedEquipment.push(equipmentData);
             }
         }
 
@@ -82,8 +188,6 @@ app.get('/user', async (req, res) => {
         res.render('user', { equipmentList: [], borrowedEquipment: [] });
     }
 });
-
-
 
 app.get('/api/contract-info', (req, res) => {
     res.json({
