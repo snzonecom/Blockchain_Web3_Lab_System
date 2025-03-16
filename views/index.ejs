@@ -64,9 +64,22 @@
         <script>
             function navigateIfEnabled(url) {
                 const targetDiv = event.currentTarget; // Get the clicked div
-
                 if (!targetDiv.classList.contains("disabled")) {
-                    window.location.href = url;
+                    // Get the account from localStorage
+                    const account = localStorage.getItem("account");
+                    let finalUrl = url;
+
+                    // Ensure URL starts with a "/"
+                    if (!url.startsWith("/")) {
+                        finalUrl = "/" + url;
+                    }
+
+                    // Append account parameter if applicable
+                    if (finalUrl === "/user") {
+                        finalUrl += `?account=${encodeURIComponent(account)}`;
+                    }
+
+                    window.location.href = finalUrl;
                 } else {
                     Swal.fire({
                         icon: "error",
@@ -76,6 +89,7 @@
                     });
                 }
             }
+
         </script>
 
     </div>

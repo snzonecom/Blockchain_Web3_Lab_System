@@ -28,15 +28,15 @@ app.get('/', (req, res) => {
 });
 
 // Routes
-const conditionMapping = {
-    '1': 'Undamaged',
-    '2': 'Damaged'
-};
-
 app.get('/new-equipment', async (req, res) => {
     try {
         const contract = new web3.eth.Contract(contractABI, contractAddress);
         const equipmentCount = await contract.methods.equipmentCount().call();
+        const conditionMapping = {
+            '1': 'Undamaged',
+            '2': 'Damaged'
+        };
+        
         let equipmentList = [];
 
         for (let i = 1; i <= equipmentCount; i++) {
@@ -156,6 +156,12 @@ app.get('/metadata/:id', async (req, res) => {
 
 app.get('/user', async (req, res) => {
     try {
+
+        const userAccount = req.query.account; // Read from query parameters
+        if (!userAccount) {
+            return res.status(400).send("User account is required.");
+        }
+
         const contract = new web3.eth.Contract(contractABI, contractAddress);
         const equipmentList = [];
         const borrowedEquipment = [];
@@ -170,24 +176,24 @@ app.get('/user', async (req, res) => {
                 isAvailable: equip[2],
                 currentBorrower: equip[3],
                 borrowTime: equip[4],
-                returnDeadline: equip[5],
-                returnTime: equip[6], // New field from smart contract
-                currentCondition: equip[7] // New field from smart contract
+                returnTime: equip[5],
+                currentCondition: equip[6]
             };
 
-            if (equipmentData.isAvailable) {
+            if (equipmentData.isAvailable && equipmentData.currentCondition !== '2') {
                 equipmentList.push(equipmentData);
-            } else {
+            } else if (equipmentData.currentBorrower.toLowerCase() === userAccount.toLowerCase()) {
                 borrowedEquipment.push(equipmentData);
             }
         }
 
         res.render('user', { equipmentList, borrowedEquipment });
     } catch (error) {
-        console.error("Error fetching equipment:", error);
+        console.error("🔥 Error fetching equipment:", error);
         res.render('user', { equipmentList: [], borrowedEquipment: [] });
     }
 });
+
 
 app.get('/api/contract-info', (req, res) => {
     res.json({

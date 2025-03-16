@@ -55,4 +55,30 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
 
+    document.addEventListener("DOMContentLoaded", async () => {
+        if (typeof window.ethereum === "undefined") {
+            alert("Please install MetaMask to use this feature.");
+            return;
+        }
+
+        const web3 = new Web3(window.ethereum);
+        await window.ethereum.request({ method: "eth_requestAccounts" });
+
+        const accounts = await web3.eth.getAccounts();
+        const userAccount = accounts[0];
+
+        console.log("🟢 Connected wallet:", userAccount);
+
+        // 🔥 Send request with userAccount in the query string
+        const userPageResponse = await fetch(`/user?account=${encodeURIComponent(userAccount)}`);
+
+        console.log("🔵 Fetching user page, status:", userPageResponse.status);
+
+        const userPageText = await userPageResponse.text();
+        console.log("📝 Backend Response:", userPageText);
+
+        document.body.innerHTML = userPageText; // Render the response in the page
+    });
+
+
 });

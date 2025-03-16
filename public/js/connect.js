@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const accountInfo = document.getElementById("account-info");
     const accountAddress = document.getElementById("accountAddress");
     const userRole = document.getElementById("userRole");
-    
+
     const userOption = document.getElementById("user-option");
     const adminPanel = document.getElementById("admin-panel");
 
@@ -52,17 +52,17 @@ document.addEventListener("DOMContentLoaded", async () => {
             const response = await fetch("/api/contract-info");
             const { contractAddress, contractABI } = await response.json();
             const contract = new web3.eth.Contract(contractABI, contractAddress);
-    
+
             // Fetch owner from contract (correct method)
             const owner = await contract.methods.owner().call();
-            
+
             return owner.toLowerCase() === account.toLowerCase() ? "Admin" : "User";
         } catch (error) {
             console.error("Error fetching role:", error);
             return "User";
         }
     }
-    
+
 
     // Check for stored session
     if (localStorage.getItem("connected") === "true") {
@@ -96,4 +96,6 @@ document.addEventListener("DOMContentLoaded", async () => {
 
         disableAllOptions();
     });
+
+
 });
