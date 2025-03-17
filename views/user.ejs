@@ -56,17 +56,21 @@
     <!-- Borrowed Equipment Lists -->
     <div id="borrowed" class="equipment-list">
         <div class="equipment-grid">
-            <% if (borrowedEquipment.length === 0) { %>
+            <% if (borrowedEquipment.length===0) { %>
                 <p>No borrowed equipment.</p>
-            <% } else { %>
-                <% borrowedEquipment.forEach(equipment => { %>
-            <div class="equipment-card">
-                <div class="equipment-title"><%= equipment.name %></div>
-                <div class="status-badge borrow-badge">Borrowed Time: <%= new Date(equipment.borrowTime * 1000).toLocaleString() %></div>
-                <button class="return-button" data-id="<%= equipment.id %>">Return</button>
-            </div>
-            <% }); %>
-        <% } %>
+                <% } else { %>
+                    <% borrowedEquipment.forEach(equipment=> { %>
+                        <div class="equipment-card">
+                            <div class="equipment-title">
+                                <%= equipment.name %>
+                            </div>
+                            <div class="status-badge borrow-badge">Borrowed Time: <%= new Date(equipment.borrowTime *
+                                    1000).toLocaleString() %>
+                            </div>
+                            <button class="return-button" data-id="<%= equipment.id %>">Return</button>
+                        </div>
+                        <% }); %>
+                            <% } %>
         </div>
     </div>
 
@@ -88,6 +92,7 @@
         }
     </script>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
     <script src="/js/user.js"></script>
 

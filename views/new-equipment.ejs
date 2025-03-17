@@ -48,8 +48,9 @@
                             <div class="equipment-description">
                                 <%= equipment.description %>
                             </div>
-                            <div class="equipment-description">
-                                Condition: <%= equipment.condition %>
+                            <div
+                                class="status-badge <%= equipment.isUndamaged ? 'status-undamaged' : 'status-damaged' %>">
+                                Status: <%= equipment.isUndamaged ? 'Undamaged' : 'Damaged' %>
                             </div>
                             <div
                                 class="status-badge <%= equipment.isAvailable ? 'status-available' : 'status-borrowed' %>">
@@ -63,6 +64,7 @@
 
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
     <script src="/js/admin.js"></script>
 

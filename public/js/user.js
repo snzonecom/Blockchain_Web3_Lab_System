@@ -21,14 +21,38 @@ document.addEventListener("DOMContentLoaded", async () => {
             const equipmentId = button.getAttribute("data-id");
 
             try {
+                Swal.fire({
+                    title: "Processing...",
+                    text: "Please wait while we process your request.",
+                    allowOutsideClick: false,
+                    allowEscapeKey: false,
+                    didOpen: () => {
+                        Swal.showLoading();
+                    }
+                });
+
                 await contract.methods.borrowEquipment(equipmentId)
                     .send({ from: userAccount });
 
-                alert("Equipment borrowed successfully!");
-                location.reload();
+                Swal.fire({
+                    title: "Success!",
+                    text: "Equipment borrowed successfully!",
+                    icon: "success",
+                    confirmButtonColor: "#014d6f",
+                    confirmButtonText: "OK"
+                }).then(() => {
+                    location.reload();
+                });
+
             } catch (error) {
                 console.error("Error borrowing equipment:", error);
-                alert("Failed to borrow equipment.");
+                Swal.fire({
+                    title: "Error!",
+                    text: "Failed to borrow equipment.",
+                    icon: "error",
+                    confirmButtonColor: "#014d6f",
+                    confirmButtonText: "OK"
+                });
             }
         });
     });
@@ -38,20 +62,56 @@ document.addEventListener("DOMContentLoaded", async () => {
         button.addEventListener("click", async () => {
             const equipmentId = button.getAttribute("data-id");
 
-            // Ask the user if the equipment is damaged
-            const isDamaged = confirm("Is the equipment damaged? Click 'OK' for YES, 'Cancel' for NO.");
+            Swal.fire({
+                title: "Is the equipment damaged?",
+                text: "Click 'Yes' if the equipment is damaged, or 'No' if it is undamaged.",
+                icon: "warning",
+                showCancelButton: true,
+                confirmButtonText: "Yes, it's damaged",
+                cancelButtonText: "No, it's fine",
+                confirmButtonColor: "#d33", // Red for damage
+                cancelButtonColor: "#28a745" // Green for undamaged
+            }).then(async (result) => {
+                if (result.isConfirmed || result.dismiss === Swal.DismissReason.cancel) {
+                    const isDamaged = result.isConfirmed; // true if damaged, false if undamaged
 
-            try {
-                const accounts = await web3.eth.getAccounts(); // Get the user's wallet address
-                await contract.methods.returnEquipment(equipmentId, isDamaged)
-                    .send({ from: accounts[0] });
+                    try {
+                        Swal.fire({
+                            title: "Processing...",
+                            text: "Please wait while we process your return.",
+                            allowOutsideClick: false,
+                            allowEscapeKey: false,
+                            didOpen: () => {
+                                Swal.showLoading();
+                            }
+                        });
 
-                alert("Equipment returned successfully!");
-                location.reload();
-            } catch (error) {
-                console.error("Error returning equipment:", error);
-                alert("Failed to return equipment.");
-            }
+                        const accounts = await web3.eth.getAccounts();
+                        await contract.methods.returnEquipment(equipmentId, isDamaged)
+                            .send({ from: accounts[0] });
+
+                        Swal.fire({
+                            title: "Success!",
+                            text: "Equipment returned successfully!",
+                            icon: "success",
+                            confirmButtonColor: "#014d6f",
+                            confirmButtonText: "OK"
+                        }).then(() => {
+                            location.reload();
+                        });
+
+                    } catch (error) {
+                        console.error("Error returning equipment:", error);
+                        Swal.fire({
+                            title: "Error!",
+                            text: "Failed to return equipment.",
+                            icon: "error",
+                            confirmButtonColor: "#014d6f",
+                            confirmButtonText: "OK"
+                        });
+                    }
+                }
+            });
         });
     });
 

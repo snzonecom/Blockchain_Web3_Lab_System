@@ -8,10 +8,10 @@ const port = process.env.PORT || 3000;
 
 // Contract ABI and address (update the address after deployment)
 const contractABI = require('./contractABI.json');
-const contractAddress = '0xfcAE4A993bbC0811fd1C0d2b613C3FDE033D2aec'; // Replace with actual address after deployment
+const contractAddress = '0xCE920E28DeA25354DE02048d444E4bFB55F0E17D'; // Replace with actual address after deployment
 
 // Configure web3 with Holesky testnet
-const web3 = new Web3('https://ethereum-holesky.publicnode.com');
+const web3 = new Web3('https://eth-holesky.g.alchemy.com/v2/');
 
 // Set view engine
 app.set('view engine', 'ejs');
@@ -49,7 +49,8 @@ app.get('/new-equipment', async (req, res) => {
                 name: equipment[0],
                 description: equipment[1],
                 isAvailable: equipment[2],
-                condition: conditionText
+                condition: conditionText,
+                isUndamaged: conditionIndex === '1'
             });
         }
 

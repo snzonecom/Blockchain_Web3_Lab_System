@@ -110,6 +110,7 @@ h1 {
     padding: 8px 15px;
     border-radius: 20px;
     font-size: 0.9rem;
+    margin-bottom: 10px;
 }
 
 .status-available {
@@ -120,4 +121,14 @@ h1 {
 .status-borrowed {
     background-color: #ffcccb;
     color: #b73239;
+}
+
+.status-undamaged {
+    background-color: #cce5ff;
+    color: #004085;
+}
+
+.status-damaged {
+    background-color: #ffe5b4;
+    color: #b76e00;
 }

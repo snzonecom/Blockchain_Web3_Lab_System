@@ -21,7 +21,11 @@ document.addEventListener("DOMContentLoaded", async () => {
         const condition = "UNDAMAGED";
 
         if (!name || !description || !condition) {
-            alert("Please fill in all fields.");
+            Swal.fire({
+                icon: "warning",
+                title: "Missing Fields",
+                text: "Please fill in all fields before submitting.",
+            });
             return;
         }
 
@@ -33,35 +37,36 @@ document.addEventListener("DOMContentLoaded", async () => {
             // Generate metadata URL dynamically
             const tokenURI = `http://localhost:3000/metadata/${newEquipmentId}.json`;
 
+            Swal.fire({
+                title: "Adding Equipment...",
+                text: "Please wait while the transaction is being processed.",
+                allowOutsideClick: false,
+                allowEscapeKey: false,
+                didOpen: () => {
+                    Swal.showLoading();
+                },
+            });
+
             // Call smart contract function to add equipment
             await contract.methods.addEquipment(name, description, condition, tokenURI)
                 .send({ from: userAccount });
 
-            alert("Equipment added successfully!");
-            location.reload();
+            Swal.fire({
+                icon: "success",
+                title: "Equipment Added",
+                text: "The equipment has been successfully added!",
+                confirmButtonColor: "#014d6f",
+            }).then(() => {
+                location.reload();
+            });
+
         } catch (error) {
-            console.error("Error adding equipment:", error);
-            alert("Failed to add equipment.");
+            Swal.fire({
+                icon: "error",
+                title: "Transaction Failed",
+                text: "Failed to add equipment. Please try again.",
+                confirmButtonColor: "#014d6f",
+            });
         }
     });
-
-    // Marking damaged equipment as available again
-    document.querySelectorAll(".repair-btn").forEach(button => {
-        button.addEventListener("click", async () => {
-            const equipmentId = button.getAttribute("data-id");
-    
-            try {
-                const accounts = await web3.eth.getAccounts(); // Get admin's wallet address
-                await contract.methods.updateEquipmentCondition(equipmentId, false)
-                    .send({ from: accounts[0] });
-    
-                alert("Equipment marked as available again!");
-                location.reload();
-            } catch (error) {
-                console.error("Error updating equipment condition:", error);
-                alert("Failed to update equipment condition.");
-            }
-        });
-    });
-    
 });
