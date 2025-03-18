@@ -15,6 +15,8 @@
 
 <body>
     <div class="container">
+
+        <!-- Back to Index Button -->
         <a href="/" class="back-button">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
                 <path
@@ -24,10 +26,12 @@
             Back to Home
         </a>
 
+        <!-- Page header -->
         <h1>Hello Admin! <br> Do you want to: </h1>
 
         <div class="options-container">
 
+            <!-- Add new equipment button -->
             <div class="option-card-new">
                 <svg xmlns="http://www.w3.org/2000/svg" height="100" fill="#014d6f" viewBox="0 0 256 256">
                     <path
@@ -37,6 +41,7 @@
                 <div class="option-title">Add New <br>Equipment</div>
             </div>
 
+            <!-- Manage damaged equipment button -->
             <div class="option-card-damaged">
                 <svg xmlns="http://www.w3.org/2000/svg" height="100" fill="#014d6f" viewBox="0 0 256 256">
                     <path
@@ -46,6 +51,7 @@
                 <div class="option-title">View Damaged Equipment</div>
             </div>
 
+            <!-- View equipment record/history button -->
             <div class="option-card-history">
                 <svg xmlns="http://www.w3.org/2000/svg" height="100" fill="#014d6f" viewBox="0 0 256 256">
                     <path
@@ -57,6 +63,7 @@
         </div>
     </div>
 
+    <!-- Script for buttons event listener -->
     <script>
         document.querySelector(".option-card-new").addEventListener("click", function() {
             window.location.href = "new-equipment";
@@ -67,7 +74,7 @@
         document.querySelector(".option-card-history").addEventListener("click", function() {
             window.location.href = "record";
         });
-    </script>    
+    </script>
 </body>
 
 </html>

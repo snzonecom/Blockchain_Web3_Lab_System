@@ -22,8 +22,11 @@
                 </path>
             </svg>
         </div>
+
+        <!-- Page header -->
         <h1>Science Laboratory Borrow-Return Management System</h1>
 
+        <!-- Metamask connect section -->
         <div class="metamask-section">
             <p>Connect your MetaMask wallet to get started:</p>
             <button id="connectWallet" class="connect-btn">Connect My MetaMask</button>
@@ -35,7 +38,7 @@
             </p>
         </div>
 
-
+        <!-- Option button -->
         <div class="options">
             <div id="user-option" class="option disabled" onclick="navigateIfEnabled('user')">
                 <svg xmlns="http://www.w3.org/2000/svg" height="100" fill="#014d6f" viewBox="0 0 256 256">
@@ -56,60 +59,13 @@
             </div>
 
         </div>
-
-        <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-        <script src="/js/connect.js"></script>
-        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
-
-        <script>
-            function navigateIfEnabled(url) {
-                const targetDiv = event.currentTarget; // Get the clicked div
-                if (!targetDiv.classList.contains("disabled")) {
-                    // Get the account from localStorage
-                    const account = localStorage.getItem("account");
-                    let finalUrl = url;
-
-                    // Ensure URL starts with a "/"
-                    if (!url.startsWith("/")) {
-                        finalUrl = "/" + url;
-                    }
-
-                    // Append account parameter if applicable
-                    if (finalUrl === "/user") {
-                        finalUrl += `?account=${encodeURIComponent(account)}`;
-                    }
-
-                    window.location.href = finalUrl;
-                } else {
-                    Swal.fire({
-                        icon: "error",
-                        title: "Access Denied",
-                        text: "You are not allowed to access this feature. You should login first",
-                        confirmButtonColor: "#d33"
-                    });
-                }
-            }
-
-        </script>
-
     </div>
-    <script>
-        document.addEventListener("DOMContentLoaded", () => {
-            const userOption = document.getElementById("user-option");
-            const adminPanel = document.getElementById("admin-panel");
 
-            const role = localStorage.getItem("role");
-
-            if (role === "Admin") {
-                adminPanel.classList.remove("disabled");
-                adminPanel.classList.add("active");
-                userOption.classList.remove("active");
-            } else {
-                adminPanel.classList.add("disabled");
-                userOption.classList.add("active");
-            }
-        });
-    </script>
+    <!-- Scripts -->
+    <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
+    <script src="/js/connect.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+    
 </body>
 
 </html>

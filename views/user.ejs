@@ -14,8 +14,7 @@
 </head>
 
 <body>
-
-    <!-- Back to Home Button -->
+    <!-- Back to Index Button -->
     <a href="/" class="back-button">
         <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
             <path
@@ -33,10 +32,12 @@
 
     <!-- Available Equipment List -->
     <div id="available" class="equipment-list active">
-        <div class="equipment-grid">
-            <% if (equipmentList.length===0) { %>
-                <p>No available equipment at the moment.</p>
-                <% } else { %>
+
+        <% if (equipmentList.length===0) { %>
+            <p style="text-align: center;">No available equipment at the moment.</p>
+
+            <% } else { %>
+                <div class="equipment-grid">
                     <% equipmentList.forEach(equipment=> { %>
                         <div class="equipment-card">
                             <div class="equipment-title">
@@ -50,15 +51,17 @@
                         </div>
                         <% }); %>
                             <% } %>
-        </div>
+                </div>
     </div>
 
     <!-- Borrowed Equipment Lists -->
     <div id="borrowed" class="equipment-list">
-        <div class="equipment-grid">
-            <% if (borrowedEquipment.length===0) { %>
-                <p>No borrowed equipment.</p>
-                <% } else { %>
+
+        <% if (borrowedEquipment.length===0) { %>
+            <p style="text-align: center;">No borrowed equipment.</p>
+
+            <% } else { %>
+                <div class="equipment-grid">
                     <% borrowedEquipment.forEach(equipment=> { %>
                         <div class="equipment-card">
                             <div class="equipment-title">
@@ -71,27 +74,10 @@
                         </div>
                         <% }); %>
                             <% } %>
-        </div>
+                </div>
     </div>
 
-    <script>
-        function showTab(tabId) {
-            // Hide all equipment lists
-            document.querySelectorAll('.equipment-list').forEach(list => {
-                list.classList.remove('active');
-            });
-
-            // Show the selected tab
-            document.getElementById(tabId).classList.add('active');
-
-            // Update active tab styling
-            document.querySelectorAll('.tab').forEach(tab => {
-                tab.classList.remove('active');
-            });
-            event.target.classList.add('active');
-        }
-    </script>
-
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
     <script src="/js/user.js"></script>

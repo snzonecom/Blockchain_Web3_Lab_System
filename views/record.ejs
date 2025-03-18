@@ -15,6 +15,8 @@
 
 <body>
     <div class="container">
+
+        <!-- Back to Admin options -->
         <a href="/admin" class="back-button">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256">
                 <path
@@ -24,56 +26,23 @@
             Back to Home
         </a>
 
+        <!-- Page header -->
         <h1>Borrow-Return Record of Equipment</h1>
 
+        <!-- Input section -->
         <div class="search-container">
             <input type="text" id="equipmentId" class="search-input" placeholder="Enter Equipment ID">
             <button onclick="fetchHistory()" class="view-button">View Equipment History</button>
         </div>
 
         <div id="record-container">
-            <!-- History will be inserted here dynamically -->
+            <!-- History will be inserted here -->
         </div>
     </div>
 
+    <!-- Scripts -->
     <script src="https://cdn.jsdelivr.net/npm/web3@latest/dist/web3.min.js"></script>
-
-    <script>
-        async function fetchHistory() {
-            const equipmentId = document.getElementById("equipmentId").value;
-            const recordContainer = document.getElementById("record-container");
-
-            if (!equipmentId) {
-                recordContainer.innerHTML = "<p style='color:red;'>Please enter an Equipment ID.</p>";
-                return;
-            }
-
-            try {
-                const response = await fetch(`/api/record/${equipmentId}`);
-                const data = await response.json();
-
-                if (data.success && data.history.length > 0) {
-                    let html = `<h2>Transaction History for Equipment ID: ${equipmentId}</h2>`;
-                    data.history.forEach(record => {
-                        html += `
-                            <div class="record-card">
-                                <div class="borrower-id">Borrower: ${record.borrower}</div>
-                                <div class="record-info">Borrow Time: ${record.borrowTime}</div>
-                                <div class="record-info">Return Time: ${record.returnTime}</div>
-                                <div class="record-info">Return Condition: ${record.returnCondition}</div>
-                            </div>
-                        `;
-                    });
-                    recordContainer.innerHTML = html;
-                } else {
-                    recordContainer.innerHTML = `<p>No records found for Equipment ID: ${equipmentId}</p>`;
-                }
-            } catch (error) {
-                console.error(error);
-                recordContainer.innerHTML = "<p style='color:red;'>Failed to fetch history.</p>";
-            }
-        }
-    </script>
+    <script src="/js/admin.js"></script>
 </body>
 
 </html>

@@ -1,3 +1,38 @@
+async function fetchHistory() {
+    const equipmentId = document.getElementById("equipmentId").value;
+    const recordContainer = document.getElementById("record-container");
+
+    if (!equipmentId) {
+        recordContainer.innerHTML = "<p style='color:red;'>Please enter an Equipment ID.</p>";
+        return;
+    }
+
+    try {
+        const response = await fetch(`/api/record/${equipmentId}`);
+        const data = await response.json();
+
+        if (data.success && data.history.length > 0) {
+            let html = `<h2>Transaction History for Equipment ID: ${equipmentId}</h2>`;
+            data.history.forEach(record => {
+                html += `
+                    <div class="record-card">
+                        <div class="borrower-id">Borrower: ${record.borrower}</div>
+                        <div class="record-info">Borrow Time: ${record.borrowTime}</div>
+                        <div class="record-info">Return Time: ${record.returnTime}</div>
+                        <div class="record-info">Return Condition: ${record.returnCondition}</div>
+                    </div>
+                `;
+            });
+            recordContainer.innerHTML = html;
+        } else {
+            recordContainer.innerHTML = `<p>No records found for Equipment ID: ${equipmentId}</p>`;
+        }
+    } catch (error) {
+        console.error(error);
+        recordContainer.innerHTML = "<p style='color:red;'>Failed to fetch history.</p>";
+    }
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
     if (typeof window.ethereum === "undefined") {
         alert("Please install MetaMask to use this feature.");
@@ -57,6 +92,10 @@ document.addEventListener("DOMContentLoaded", async () => {
                 text: "The equipment has been successfully added!",
                 confirmButtonColor: "#014d6f",
             }).then(() => {
+                // Clear form fields
+                document.getElementById("equipmentName").value = "";
+                document.getElementById("equipmentDescription").value = "";
+                // Reload page
                 location.reload();
             });
 

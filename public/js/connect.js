@@ -1,3 +1,47 @@
+function navigateIfEnabled(url) {
+    const targetDiv = event.currentTarget; // Get the clicked div
+    if (!targetDiv.classList.contains("disabled")) {
+        // Get the account from localStorage
+        const account = localStorage.getItem("account");
+        let finalUrl = url;
+
+        // Ensure URL starts with a "/"
+        if (!url.startsWith("/")) {
+            finalUrl = "/" + url;
+        }
+
+        // Append account parameter if applicable
+        if (finalUrl === "/user") {
+            finalUrl += `?account=${encodeURIComponent(account)}`;
+        }
+
+        window.location.href = finalUrl;
+    } else {
+        Swal.fire({
+            icon: "error",
+            title: "Access Denied",
+            text: "You are not allowed to access this feature. You should login first",
+            confirmButtonColor: "#d33"
+        });
+    }
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+    const userOption = document.getElementById("user-option");
+    const adminPanel = document.getElementById("admin-panel");
+
+    const role = localStorage.getItem("role");
+
+    if (role === "Admin") {
+        adminPanel.classList.remove("disabled");
+        adminPanel.classList.add("active");
+        userOption.classList.remove("active");
+    } else {
+        adminPanel.classList.add("disabled");
+        userOption.classList.add("active");
+    }
+});
+
 document.addEventListener("DOMContentLoaded", async () => {
     const connectButton = document.getElementById("connectWallet");
     const disconnectButton = document.getElementById("disconnectWallet");

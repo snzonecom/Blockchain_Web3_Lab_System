@@ -1,3 +1,19 @@
+function showTab(tabId) {
+    // Hide all equipment lists
+    document.querySelectorAll('.equipment-list').forEach(list => {
+        list.classList.remove('active');
+    });
+
+    // Show the selected tab
+    document.getElementById(tabId).classList.add('active');
+
+    // Update active tab styling
+    document.querySelectorAll('.tab').forEach(tab => {
+        tab.classList.remove('active');
+    });
+    event.target.classList.add('active');
+}
+
 document.addEventListener("DOMContentLoaded", async () => {
     if (typeof window.ethereum === "undefined") {
         alert("Please install MetaMask to use this feature.");
@@ -13,7 +29,7 @@ document.addEventListener("DOMContentLoaded", async () => {
     const accounts = await web3.eth.getAccounts();
     const userAccount = accounts[0];
 
-    console.log("Connected wallet:", userAccount);
+    // console.log("Connected wallet:", userAccount);
 
     // Handle borrowing equipment
     document.querySelectorAll(".borrow-button").forEach(button => {
@@ -69,11 +85,11 @@ document.addEventListener("DOMContentLoaded", async () => {
                 showCancelButton: true,
                 confirmButtonText: "Yes, it's damaged",
                 cancelButtonText: "No, it's fine",
-                confirmButtonColor: "#d33", // Red for damage
-                cancelButtonColor: "#28a745" // Green for undamaged
+                confirmButtonColor: "#d33",
+                cancelButtonColor: "#28a745"
             }).then(async (result) => {
                 if (result.isConfirmed || result.dismiss === Swal.DismissReason.cancel) {
-                    const isDamaged = result.isConfirmed; // true if damaged, false if undamaged
+                    const isDamaged = result.isConfirmed;
 
                     try {
                         Swal.fire({
@@ -115,6 +131,7 @@ document.addEventListener("DOMContentLoaded", async () => {
         });
     });
 
+    // For '/user' endpoint -- getting the connected account
     document.addEventListener("DOMContentLoaded", async () => {
         if (typeof window.ethereum === "undefined") {
             alert("Please install MetaMask to use this feature.");
@@ -127,15 +144,10 @@ document.addEventListener("DOMContentLoaded", async () => {
         const accounts = await web3.eth.getAccounts();
         const userAccount = accounts[0];
 
-        console.log("🟢 Connected wallet:", userAccount);
-
-        // 🔥 Send request with userAccount in the query string
+        // Send request with userAccount in the query string
         const userPageResponse = await fetch(`/user?account=${encodeURIComponent(userAccount)}`);
 
-        console.log("🔵 Fetching user page, status:", userPageResponse.status);
-
         const userPageText = await userPageResponse.text();
-        console.log("📝 Backend Response:", userPageText);
 
         document.body.innerHTML = userPageText; // Render the response in the page
     });

@@ -1,5 +1,3 @@
-// server.js
-
 const express = require('express');
 const path = require('path');
 const Web3 = require('web3');
@@ -8,10 +6,10 @@ const port = process.env.PORT || 3000;
 
 // Contract ABI and address (update the address after deployment)
 const contractABI = require('./contractABI.json');
-const contractAddress = '0xCE920E28DeA25354DE02048d444E4bFB55F0E17D'; // Replace with actual address after deployment
+const contractAddress = '0x7924e78ef1a854116ee00c12b5d0bb860f355158';
 
-// Configure web3 with Holesky testnet
-const web3 = new Web3('https://eth-holesky.g.alchemy.com/v2/');
+// Configure web3 with Sepolia
+const web3 = new Web3('https://rpc.ankr.com/eth_sepolia');
 
 // Set view engine
 app.set('view engine', 'ejs');
@@ -23,11 +21,13 @@ app.use(express.urlencoded({ extended: true }));
 app.use(express.json());
 
 // Routes
+
+// Render the homepage (index.ejs) when the root URL is accessed
 app.get('/', (req, res) => {
     res.render('index');
 });
 
-// Routes
+// Fetch and display the list of equipment from the smart contract
 app.get('/new-equipment', async (req, res) => {
     try {
         const contract = new web3.eth.Contract(contractABI, contractAddress);
@@ -61,7 +61,7 @@ app.get('/new-equipment', async (req, res) => {
     }
 });
 
-
+// Fetch and display only damaged equipment from the smart contract
 app.get('/damaged-equipment', async (req, res) => {
     try {
         const contract = new web3.eth.Contract(contractABI, contractAddress);
@@ -95,7 +95,7 @@ app.get('/damaged-equipment', async (req, res) => {
     }
 });
 
-
+// Render the record page
 app.get('/record', (req, res) => {
     res.render('record', { history: null, equipmentId: null });
 });
@@ -123,7 +123,7 @@ app.get('/api/record/:id', async (req, res) => {
     }
 });
 
-
+// Render the admin dashboard page
 app.get('/admin', async (req, res) => {
     res.render('admin');
 });
@@ -154,7 +154,7 @@ app.get('/metadata/:id', async (req, res) => {
     }
 });
 
-
+// Render the user dashboard AND displaying available and borrowed equipment
 app.get('/user', async (req, res) => {
     try {
 
@@ -195,7 +195,7 @@ app.get('/user', async (req, res) => {
     }
 });
 
-
+// API endpoint to provide contract information (address and ABI)
 app.get('/api/contract-info', (req, res) => {
     res.json({
         contractAddress: contractAddress,

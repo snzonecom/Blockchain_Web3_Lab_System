@@ -1,4 +1,3 @@
-// public/js/dashboard.js
 document.addEventListener('DOMContentLoaded', async () => {
     // Check if MetaMask is installed and connected
     if (typeof window.ethereum === 'undefined') {
